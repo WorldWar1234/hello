@@ -8,19 +8,14 @@ const proxy = require('./src/proxy');
 const PORT = process.env.PORT || 8080;
 
 // Register express compatibility
-fastify.register(require('@fastify/express')).then(() => {
+await fastify.register(require('@fastify/express'))
+  // do you know we also have cors support?
+  // https://github.com/fastify/fastify-cors
   
-  // Enable CORS
-  // Make sure to install @fastify/cors or use the regular cors as shown below
-  fastify.register(require('@fastify/cors'), {
-    // options for cors, if any
-  });
-
-  // Alternatively, if you prefer to use express-like CORS middleware:
-  // fastify.use(require('cors')());
-
-  // Disable X-Powered-By header to not reveal the server technology
-  fastify.express.disabled('x-powered-by'); // This would typically be done with `app.disable('x-powered-by')` in Express
+  // express.Application is also accessible
+  fastify.express.disabled('x-powered-by') // true
+  return fastify
+} // This would typically be done with `app.disable('x-powered-by')` in Express
 
   // Define paths to different favicons (as in your original code)
   const favicons = [
@@ -51,4 +46,4 @@ fastify.register(require('@fastify/express')).then(() => {
   };
 
   start();
-});
+
